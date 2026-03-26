@@ -1,0 +1,216 @@
+{
+  "info": {
+    "_postman_id": "49261011-4b17-457e-a812-49714b1f0e37",
+    "name": "Plano De Requisições Serverest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20507511",
+    "_collection_link": "https://go.postman.co/collection/20507511-49261011-4b17-457e-a812-49714b1f0e37?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Listar Usuários Cadastrados",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/usuarios",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cadastrar Usuário",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const response = pm.response.json();\r",
+              "pm.environment.set(\"userIdCreated\", response._id);\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário 123e4567-e89b-12d3-a456-426655440000\",\r\n    \"email\": \"Teste123e4567-e89b-12d3-a456-426655440000@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuarios",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar Usuário Pelo ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{userIdCreated}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Alterar Cadastro do Usuário",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário fb275001-560c-44d7-9423-4039749ccaf0\",\r\n    \"email\": \"Testefb275001-560c-44d7-9423-4039749ccaf0@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{userIdCreated}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Deletar Usuário Cadastrado",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "usuarios",
+            "{{userIdCreated}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "userIdCreated",
+      "value": ""
+    },
+    {
+      "key": "randomNumberToRegister",
+      "value": ""
+    }
+  ]
+}

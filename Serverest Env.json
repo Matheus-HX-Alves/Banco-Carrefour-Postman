@@ -1,0 +1,22 @@
+{
+	"id": "40fcda9c-c247-4e9d-ad63-54efc81f4b4e",
+	"name": "Serverest Env",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "https://serverest.dev",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "userIdCreated",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"color": 120,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-03-26T17:16:17.524Z",
+	"_postman_exported_using": "Postman/11.89.2"
+}
