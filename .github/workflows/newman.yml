@@ -1,0 +1,45 @@
+name: Testes API Serverest
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # permite rodar manualmente pela aba Actions
+
+jobs:
+  newman-tests:
+    name: Rodar Testes Newman
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Newman e reporter htmlextra
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Rodar testes com Newman
+        run: |
+          newman run "Plano De Requisições Serverest.collection.json" \
+            -e "Serverest Env.json" \
+            -r htmlextra,cli \
+            --reporter-htmlextra-export ./newman-report/relatorio.html \
+            --reporter-htmlextra-displayProgressBar \
+            --reporter-htmlextra-title "Relatório De Testes Api Serverest"
+
+      - name: Publicar relatório HTML como artefato
+        uses: actions/upload-artifact@v4
+        if: always() # publica mesmo se os testes falharem
+        with:
+          name: relatorio-newman
+          path: ./newman-report/relatorio.html

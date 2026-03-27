@@ -9,6 +9,44 @@
   "item": [
     {
       "name": "Listar Usuários Cadastrados",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Código de Status é 200\",function (){\r",
+              "    pm.response.to.have.status(200)\r",
+              "})\r",
+              "pm.test(\"Válida o tempo de consulta menor 1000ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+              "});\r",
+              "var schema = {\r",
+              "   \r",
+              "  \"quantidade\": 'integer',\r",
+              "  \"usuarios\": [\r",
+              "    {\r",
+              "      \"nome\": \"string\",\r",
+              "      \"email\": \"string\",\r",
+              "      \"password\": \"string\",\r",
+              "      \"administrador\": \"boolean\",\r",
+              "      \"_id\": \"string\"\r",
+              "    }\r",
+              "  ]\r",
+              "\r",
+              "};\r",
+              "\r",
+              "var jsonData = pm.response.json()\r",
+              "\r",
+              "pm.test('Validar a estrutura do body', function () {\r",
+              "    pm.expect(tv4.validate(jsonData , schema)).to.be.true\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
         "header": [],
@@ -44,7 +82,10 @@
             "exec": [
               "const response = pm.response.json();\r",
               "pm.environment.set(\"userIdCreated\", response._id);\r",
-              ""
+              "\r",
+              "pm.test(\"Código de Status é 200\",function (){\r",
+              "    pm.response.to.have.status(201)\r",
+              "})"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -57,7 +98,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário 123e4567-e89b-12d3-a456-426655440000\",\r\n    \"email\": \"Teste123e4567-e89b-12d3-a456-426655440000@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário 123e4567-e89b-12d3-a456-426655440000\",\r\n    \"email\": \"Teste123e4567-e49c-12d3-a456-426655440000@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -84,6 +125,19 @@
           "script": {
             "exec": [
               ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Código de Status é 200\",function (){\r",
+              "    pm.response.to.have.status(200)\r",
+              "})"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -120,6 +174,19 @@
             "packages": {},
             "requests": {}
           }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Código de Status é 200\",function (){\r",
+              "    pm.response.to.have.status(200)\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
         }
       ],
       "request": {
@@ -127,7 +194,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário fb275001-560c-44d7-9423-4039749ccaf0\",\r\n    \"email\": \"Testefb275001-560c-44d7-9423-4039749ccaf0@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
+          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário fb275001-560c-44d7-9423-4039749ccaf0\",\r\n    \"email\": \"Testefb275001-560c-24s7-9423-4039749ccaf0@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -149,6 +216,32 @@
     },
     {
       "name": "Deletar Usuário Cadastrado",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Código de Status é 200\",function (){\r",
+              "    pm.response.to.have.status(200)\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "DELETE",
         "header": [],
