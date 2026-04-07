@@ -1036,47 +1036,47 @@
   "variable": [
     {
       "key": "tokenBearer",
-      "value": ""
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlXzE3NzU1Njg1NDkwNDVfNmxsbkBxYS5jb20iLCJwYXNzd29yZCI6IjVxcmY4bzRsIiwiaWF0IjoxNzc1NTY4NTUyLCJleHAiOjE3NzU1NjkxNTJ9.90qZrNwHZM-xtYfXbJdOclQj_cyJlXZbxw__N_x3RFI"
     },
     {
       "key": "nomeUsuarioCadastrado",
-      "value": ""
+      "value": "Usuario Teste 1775568549045"
     },
     {
       "key": "emailUsuarioCadastrado",
-      "value": ""
+      "value": "teste_1775568549045_6lln@qa.com"
     },
     {
       "key": "senhaUsuarioCadastrado",
-      "value": ""
+      "value": "5qrf8o4l"
     },
     {
       "key": "_idUsuarioCadastrado",
-      "value": ""
+      "value": null
     },
     {
       "key": "_idUsuarioInexistente",
-      "value": ""
+      "value": "0uxuPY0cbmQhp222"
     },
     {
       "key": "_idUsuarioInvalido",
-      "value": ""
+      "value": "00000000000000000"
     },
     {
       "key": "nomeUsuarioAdmCadastrado",
-      "value": ""
+      "value": "Usuario Teste 1775568549804"
     },
     {
       "key": "emailUsuarioAdmCadastrado",
-      "value": ""
+      "value": "teste_1775568549804_mzpe@qa.com"
     },
     {
       "key": "senhaUsuarioAdmCadastrado",
-      "value": ""
+      "value": "vecsth6m"
     },
     {
       "key": "_idUsuarioAdmCadastrado",
-      "value": ""
+      "value": "b7gsZmxRc0rC0Mmx"
     }
   ]
 }
