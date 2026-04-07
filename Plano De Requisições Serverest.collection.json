@@ -1,271 +1,1012 @@
 {
   "info": {
-    "_postman_id": "49261011-4b17-457e-a812-49714b1f0e37",
+    "_postman_id": "b0730f53-874a-421f-b2cf-f4c0e33206e2",
     "name": "Plano De Requisições Serverest",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "20507511",
-    "_collection_link": "https://go.postman.co/collection/20507511-49261011-4b17-457e-a812-49714b1f0e37?source=collection_link"
+    "_exporter_id": "20507511"
   },
   "item": [
     {
-      "name": "Listar Usuários Cadastrados",
-      "event": [
+      "name": "Usuários",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Código de Status é 200\",function (){\r",
-              "    pm.response.to.have.status(200)\r",
-              "})\r",
-              "pm.test(\"Válida o tempo de consulta menor 1000ms\", function () {\r",
-              "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
-              "});\r",
-              "var schema = {\r",
-              "   \r",
-              "  \"quantidade\": 'integer',\r",
-              "  \"usuarios\": [\r",
-              "    {\r",
-              "      \"nome\": \"string\",\r",
-              "      \"email\": \"string\",\r",
-              "      \"password\": \"string\",\r",
-              "      \"administrador\": \"boolean\",\r",
-              "      \"_id\": \"string\"\r",
-              "    }\r",
-              "  ]\r",
-              "\r",
-              "};\r",
-              "\r",
-              "var jsonData = pm.response.json()\r",
-              "\r",
-              "pm.test('Validar a estrutura do body', function () {\r",
-              "    pm.expect(tv4.validate(jsonData , schema)).to.be.true\r",
-              "});"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/usuarios",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "usuarios"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Cadastrar Usuário",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "const response = pm.response.json();\r",
-              "pm.environment.set(\"userIdCreated\", response._id);\r",
-              "\r",
-              "pm.test(\"Código de Status é 200\",function (){\r",
-              "    pm.response.to.have.status(201)\r",
-              "})"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário 123e4567-e89b-12d3-a456-426655440000\",\r\n    \"email\": \"Teste123e4567-e49c-12d3-a456-426655440000@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "POST / Usuários",
+          "item": [
+            {
+              "name": "Cadastrar Usuário",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioCadastrado', pm.response.json()._id)\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (201)\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'message' e '_id' \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\");\r",
+                      "    pm.expect(body).to.have.property(\"_id\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Cadastro realizado com sucesso' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Cadastro realizado com sucesso\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const userDate = Date.now();\r",
+                      "const userNumbRand = Math.random().toString(36).substring(2, 6);\r",
+                      "const passRand = Math.random().toString(36).substring(2, 10);\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"nomeUsuarioCadastrado\",  `Usuario Teste ${userDate}`);\r",
+                      "pm.collectionVariables.set(\"emailUsuarioCadastrado\", `teste_${userDate}_${userNumbRand}@qa.com`);\r",
+                      "pm.collectionVariables.set(\"senhaUsuarioCadastrado\", `${passRand}`); "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{nomeUsuarioCadastrado}}\",\r\n  \"email\": \"{{emailUsuarioCadastrado}}\",\r\n  \"password\": \"{{senhaUsuarioCadastrado}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cadastrar Usuário - Usuário Já Existente",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      " \r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de Bad Request (400)\", () => pm.response.to.have.status(400));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui message \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Este email já está sendo usado' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Este email já está sendo usado\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{nomeUsuarioCadastrado}}\",\r\n  \"email\": \"{{emailUsuarioCadastrado}}\",\r\n  \"password\": \"{{senhaUsuarioCadastrado}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cadastrar Usuário - Email Inválido",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      " \r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de Bad Request (400)\", () => pm.response.to.have.status(400));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'email' \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"email\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta email é 'email deve ser um email válido' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.email).to.equal(\"email deve ser um email válido\"); \r",
+                      "});     \r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{nomeUsuarioCadastrado}}\",\r\n  \"email\": \"EmailInvalido\",\r\n  \"password\": \"{{senhaUsuarioCadastrado}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Cadastrar Usuário Administrador",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioAdmCadastrado', pm.response.json()._id)\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (201)\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui message e ID \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\");\r",
+                      "    pm.expect(body).to.have.property(\"_id\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Cadastro realizado com sucesso' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Cadastro realizado com sucesso\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const userDate = Date.now();\r",
+                      "const userNumbRand = Math.random().toString(36).substring(2, 6);\r",
+                      "const passRand = Math.random().toString(36).substring(2, 10);\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"nomeUsuarioAdmCadastrado\",  `Usuario Teste ${userDate}`);\r",
+                      "pm.collectionVariables.set(\"emailUsuarioAdmCadastrado\", `teste_${userDate}_${userNumbRand}@qa.com`);\r",
+                      "pm.collectionVariables.set(\"senhaUsuarioAdmCadastrado\", `${passRand}`); "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{nomeUsuarioAdmCadastrado}}\",\r\n  \"email\": \"{{emailUsuarioAdmCadastrado}}\",\r\n  \"password\": \"{{senhaUsuarioAdmCadastrado}}\",\r\n  \"administrador\": \"true\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              },
+              "response": []
             }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/usuarios",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "usuarios"
           ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Listar Usuário Pelo ID",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Código de Status é 200\",function (){\r",
-              "    pm.response.to.have.status(200)\r",
-              "})"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "usuarios",
-            "{{userIdCreated}}"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Alterar Cadastro do Usuário",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Código de Status é 200\",function (){\r",
-              "    pm.response.to.have.status(200)\r",
-              "})"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"nome\": \"Teste De Automatização Usuário fb275001-560c-44d7-9423-4039749ccaf0\",\r\n    \"email\": \"Testefb275001-560c-24s7-9423-4039749ccaf0@teste.com.br\",\r\n    \"password\": \"teste\",\r\n    \"administrador\": \"true\"\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "GET / Usuários",
+          "item": [
+            {
+              "name": "Lista todos os usuários",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis do ENV\r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioCadastrado', pm.response.json().usuarios[0]._id)\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (200)\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui quantdade \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"quantidade\");\r",
+                      "    pm.expect(body).to.have.property(\"usuarios\").that.is.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Campos obrigatórios e tipos corretos\", () => {\r",
+                      "    var { usuarios } = pm.response.json();\r",
+                      "    usuarios.forEach(u => {\r",
+                      "        pm.expect(u).to.have.keys([\"nome\", \"email\", \"password\", \"administrador\", \"_id\"]);\r",
+                      "        pm.expect(u.nome).to.be.a(\"string\");\r",
+                      "        pm.expect(u.email).to.be.a(\"string\").and.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+                      "        pm.expect(u.administrador).to.be.oneOf([\"true\", \"false\"]);\r",
+                      "    });\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Quantidade bate com tamanho do array\", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.quantidade).to.equal(body.usuarios.length);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Lista usuário por ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (200)\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui quantdade \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body).to.have.property(\"quantidade\");\r",
+                      "  pm.expect(body).to.have.property(\"usuarios\").that.is.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Campos obrigatórios e tipos corretos\", () => {\r",
+                      "  var { usuarios } = pm.response.json();\r",
+                      "  usuarios.forEach(u => {\r",
+                      "    pm.expect(u).to.have.keys([\"nome\", \"email\", \"password\", \"administrador\", \"_id\"]);\r",
+                      "    pm.expect(u.nome).to.be.a(\"string\");\r",
+                      "    pm.expect(u.email).to.be.a(\"string\").and.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+                      "    pm.expect(u.administrador).to.be.oneOf([\"true\", \"false\"]);\r",
+                      "  });\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Quantidade bate com tamanho do array\", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.quantidade).to.equal(body.usuarios.length);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios?_id={{_idUsuarioCadastrado}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios"
+                  ],
+                  "query": [
+                    {
+                      "key": "_id",
+                      "value": "{{_idUsuarioCadastrado}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Lista usuário por ID - Usuário Inexistente",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "pm.test(\"Retorna o Status de Bad Request (400)\", () => pm.response.to.have.status(400));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui message\", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body).to.have.property(\"message\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Usuário não encontrado' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Usuário não encontrado\"); \r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioInexistente}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioInexistente}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Lista usuário por ID - Usuário Inválido",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "pm.test(\"Retorna o Status de Bad Request (400)\", () => pm.response.to.have.status(400));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui id\", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body).to.have.property(\"id\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta id é 'id deve ter exatamente 16 caracteres alfanuméricos' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.id).to.equal(\"id deve ter exatamente 16 caracteres alfanuméricos\"); \r",
+                      "});\r",
+                      " \r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "  pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioInvalido}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioInvalido}}"
+                  ]
+                }
+              },
+              "response": []
             }
-          }
-        },
-        "url": {
-          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "usuarios",
-            "{{userIdCreated}}"
           ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Deletar Usuário Cadastrado",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              ""
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
         },
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test(\"Código de Status é 200\",function (){\r",
-              "    pm.response.to.have.status(200)\r",
-              "})"
-            ],
-            "type": "text/javascript",
-            "packages": {},
-            "requests": {}
-          }
-        }
-      ],
-      "request": {
-        "method": "DELETE",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "",
-          "options": {
-            "raw": {
-              "language": "json"
+          "name": "POST / Login",
+          "item": [
+            {
+              "name": "Login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.collectionVariables.set('tokenBearer',pm.response.json().authorization.split(' ')[1]);\r",
+                      "\r",
+                      "pm.test(\"Código de Status é 200\",function (){\r",
+                      "    pm.response.to.have.status(200)\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"Válida o tempo da requisição menor 1000ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Content-Type é JSON\", () => {\r",
+                      "  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "var schema = {\r",
+                      "  \"message\": \"string\",\r",
+                      "  \"authorization\": \"string\"\r",
+                      "};\r",
+                      "\r",
+                      "var jsonData = pm.response.json()\r",
+                      "\r",
+                      "pm.test('Validar a estrutura do body da resposta', function () {\r",
+                      "    pm.expect(tv4.validate(jsonData , schema)).to.be.true\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"{{emailUsuarioCadastrado}}\",\r\n  \"password\": \"{{senhaUsuarioCadastrado}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "response": []
             }
-          }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/usuarios/{{userIdCreated}}",
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "path": [
-            "usuarios",
-            "{{userIdCreated}}"
+        {
+          "name": "PUT / Usuários",
+          "item": [
+            {
+              "name": "Alteração de Cadastro - Usuário Inexistente",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioCadastrado', pm.response.json()._id)\r",
+                      "\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (201)\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'message' e '_id' \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\");\r",
+                      "    pm.expect(body).to.have.property(\"_id\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Cadastro realizado com sucesso' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Cadastro realizado com sucesso\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioInexistente}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioInexistente}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Alteração de Cadastro",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      " \r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (200)\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'message'  \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Registro alterado com sucesso' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Registro alterado com sucesso\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{$randomFullName}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioCadastrado}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioCadastrado}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Alteração de Cadastro - Email Inválido",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de bad request (400)\", () => pm.response.to.have.status(400));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'email'  \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"email\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'email deve ser um email válido' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.email).to.equal(\"email deve ser um email válido\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"nome\": \"{{$randomFullName}}\",\r\n  \"email\": \"EmailInvalido\",\r\n  \"password\": \"{{$randomPassword}}\",\r\n  \"administrador\": \"false\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioCadastrado}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioCadastrado}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "DELETE / Usuários",
+          "item": [
+            {
+              "name": "Delete de Cadastro",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioCadastrado', pm.response.json()._id)\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (200)\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'message'  \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Registro excluído com sucesso' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Registro excluído com sucesso\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioCadastrado}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioCadastrado}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete de Cadastro - Usuário Inexistente",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "//Set Variáveis da collectionVariables \r",
+                      "\r",
+                      "pm.collectionVariables.set('_idUsuarioCadastrado', pm.response.json()._id)\r",
+                      "\r",
+                      "//Execução dos testes\r",
+                      "\r",
+                      "pm.test(\"Retorna o Status de sucesso (200)\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Retorno no tipo application/json\", () => {\r",
+                      "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta possui 'message' e  \", () => {\r",
+                      "    var body = pm.response.json();\r",
+                      "    pm.expect(body).to.have.property(\"message\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Resposta message é 'Nenhum registro excluído' \", () => {\r",
+                      "  var body = pm.response.json();\r",
+                      "  pm.expect(body.message).to.equal(\"Nenhum registro excluído\"); \r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Responde em menos de 2000ms\", () => {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                      "});\r",
+                      " "
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/usuarios/{{_idUsuarioInexistente}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "usuarios",
+                    "{{_idUsuarioInexistente}}"
+                  ]
+                }
+              },
+              "response": []
+            }
           ]
         }
-      },
-      "response": []
+      ]
     }
   ],
   "event": [
@@ -294,15 +1035,47 @@
   ],
   "variable": [
     {
-      "key": "baseUrl",
+      "key": "tokenBearer",
       "value": ""
     },
     {
-      "key": "userIdCreated",
+      "key": "nomeUsuarioCadastrado",
       "value": ""
     },
     {
-      "key": "randomNumberToRegister",
+      "key": "emailUsuarioCadastrado",
+      "value": ""
+    },
+    {
+      "key": "senhaUsuarioCadastrado",
+      "value": ""
+    },
+    {
+      "key": "_idUsuarioCadastrado",
+      "value": ""
+    },
+    {
+      "key": "_idUsuarioInexistente",
+      "value": ""
+    },
+    {
+      "key": "_idUsuarioInvalido",
+      "value": ""
+    },
+    {
+      "key": "nomeUsuarioAdmCadastrado",
+      "value": ""
+    },
+    {
+      "key": "emailUsuarioAdmCadastrado",
+      "value": ""
+    },
+    {
+      "key": "senhaUsuarioAdmCadastrado",
+      "value": ""
+    },
+    {
+      "key": "_idUsuarioAdmCadastrado",
       "value": ""
     }
   ]
