@@ -1,5 +1,7 @@
 # 🧪 Testes Automatizados — API Serverest
 
+![Newman Tests](https://github.com/Matheus-HX-Alves/Banco-Carrefour-Postman/actions/workflows/newman.yml/badge.svg)
+
 Projeto de testes automatizados para a API RESTful [Serverest](https://serverest.dev/), desenvolvido com **Postman** e executado via **Newman** com geração de relatório HTML interativo. A pipeline de CI/CD é gerenciada pelo **GitHub Actions**, garantindo a execução automática dos testes a cada alteração no repositório.
 
 ---
